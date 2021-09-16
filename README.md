@@ -6,7 +6,28 @@ Visit my blog for more details: [Jphoooo](https://jphoooo.com)
 
 Unity version : `2020.2.6 f1` or `later`
 
-## 🧊 20210916
+### 🧊 20210916
 
-![preview](https://github.com/JpHoooo/unity-kinect-testbed/blob/master/Recordings/20210916-preview.gif)
+![20210916-preview](https://github.com/JpHoooo/unity-kinect-testbed/blob/master/Recordings/20210916-preview.gif)
+
+#### Issue
+
+When opening the project, you will find the following bug:
+
+![20210916-bug](https://github.com/JpHoooo/unity-kinect-testbed/blob/master/Recordings/20210916-bug.jpg)
+
+#### Reason
+
+`BackgroundRemovalManager.cs` sets the access permission of the `textureRes` parameter to private, so we cannot call it directly
+
+#### Solution
+
+find the `BackgroundRemovalManager.cs` and modify it like the following code
+
+```diff 
+  //render texture resolution
+- private Vector2Int textureRes;
++ public Vector2Int textureRes;
+```
+
 
