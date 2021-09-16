@@ -20,7 +20,7 @@ MonoBehaviour:
     x: -946
     y: -190
     width: 2312
-    height: 1740
+    height: 1718
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -109,7 +109,7 @@ VisualEffectResource:
   m_Infos:
     m_RendererSettings:
       motionVectorGenerationMode: 0
-      shadowCastingMode: 0
+      shadowCastingMode: 1
       receiveShadows: 0
       reflectionProbeUsage: 0
       lightProbeUsage: 0
@@ -168,7 +168,6 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children:
   - {fileID: 8926484042661614635}
-  - {fileID: 8926484042661614778}
   m_UIPosition: {x: 941, y: 238}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
@@ -2571,7 +2570,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Color, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"r":20.0,"g":0.0,"b":0.0,"a":0.0}'
+      m_SerializableObject: '{"r":19.999998092651368,"g":0.0,"b":2.463884115219116,"a":0.0}'
     m_Space: 2147483647
   m_Property:
     name: 
@@ -3753,7 +3752,7 @@ MonoBehaviour:
   indirectDraw: 0
   computeCulling: 0
   frustumCulling: 0
-  castShadows: 0
+  castShadows: 1
   useExposureWeight: 0
 --- !u!114 &8926484042661614762
 MonoBehaviour:
@@ -4758,7 +4757,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 497, y: 1438}
+  m_UIPosition: {x: 500, y: 1382}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
