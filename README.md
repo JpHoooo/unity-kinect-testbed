@@ -30,4 +30,10 @@ find the `BackgroundRemovalManager.cs` and modify it like the following code
 + public Vector2Int textureRes;
 ```
 
+### 🛰️ 20210621
+
+![20210621-preview](https://github.com/JpHoooo/unity-kinect-testbed/blob/master/Recordings/20210621-preview.gif)
+
+
+
 
