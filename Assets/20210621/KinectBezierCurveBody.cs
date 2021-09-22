@@ -3,7 +3,7 @@ using UnityEngine;
 using com.rfilkov.kinect;
 
 
-// FIXME: body的段数
+// FIXME: Head的平滑还没处理好
 public class KinectBezierCurveBody : MonoBehaviour
 {
     private KinectManager kinectManager;
@@ -29,8 +29,12 @@ public class KinectBezierCurveBody : MonoBehaviour
 
     private void Update()
     {
-        DrawHead();
-        DrawBody();
+        if (kinectManager.IsInitialized() && HumanDatas.Length > 0)
+        {
+            DrawHead();
+            DrawBody();
+        }
+
     }
 
     private void DrawHead()
@@ -42,21 +46,30 @@ public class KinectBezierCurveBody : MonoBehaviour
             KinectInterop.JointType jointType = headLineRenderData.jointType;
             Vector3 position = headLineRenderData.position;
             ulong userId = kinectManager.GetUserIdByIndex(headLineRenderData.index);
-            Vector3 circleCenter = kinectManager.GetJointKinectPosition(userId, jointType, true);
 
-            float angle = 360f / (circlePositionCount - 1);
-            lineRenderer.positionCount = circlePositionCount;
-
-            for (int j = 0; j < circlePositionCount; j++)
+            if (kinectManager.IsUserTracked(userId))
             {
-                if (j != 0)
+                lineRenderer.gameObject.SetActive(true);
+                Vector3 circleCenter = kinectManager.GetJointKinectPosition(userId, jointType, true);
+
+                float angle = 360f / (circlePositionCount - 1);
+                lineRenderer.positionCount = circlePositionCount;
+
+                for (int j = 0; j < circlePositionCount; j++)
                 {
-                    quaternion = Quaternion.Euler(quaternion.eulerAngles.x, quaternion.eulerAngles.y, quaternion.eulerAngles.z + angle);
+                    if (j != 0)
+                    {
+                        quaternion = Quaternion.Euler(quaternion.eulerAngles.x, quaternion.eulerAngles.y, quaternion.eulerAngles.z + angle);
+                    }
+
+                    Vector3 p = scale * (circleCenter + quaternion * Vector3.down * radius);
+
+                    lineRenderer.SetPosition(j, p);
                 }
-
-                position = scale * (circleCenter + quaternion * Vector3.down * radius);
-
-                lineRenderer.SetPosition(j, position);
+            }
+            else
+            {
+                lineRenderer.gameObject.SetActive(false);
             }
         }
     }
@@ -72,15 +85,22 @@ public class KinectBezierCurveBody : MonoBehaviour
             KinectInterop.JointType[] jointTypes = bodyLineRenderData.jointTypes;
             Vector3[] positions = bodyLineRenderData.positions;
             ulong userId = kinectManager.GetUserIdByIndex(bodyLineRenderData.index);
+            if (kinectManager.IsUserTracked(userId))
+            {
+                lineRenderer.gameObject.SetActive(true);
+                //TODO: Use 'kinectManager.cs' to get vec3[]
+                for (int j = 0; j < positions.Length; j++)
+                    positions[j] = Vector3.Lerp(positions[j], kinectManager.GetJointKinectPosition(userId, jointTypes[j], true) * scale, Time.deltaTime * smoothspeed);
 
-            //TODO: Use 'kinectManager.cs' to get vec3[]
-            for (int j = 0; j < positions.Length; j++)
-                positions[j] = Vector3.Lerp(positions[j], kinectManager.GetJointKinectPosition(userId, jointTypes[j], true) * scale, Time.deltaTime * smoothspeed);
-
-            //TODO: Set LineRenderer
-            List<Vector3> poslist = DrawBezierCurve.BezierCurveWithUnlimitPoints(positions, 200);
-            lineRenderer.positionCount = poslist.Count;
-            lineRenderer.SetPositions(poslist.ToArray());
+                //TODO: Set LineRenderer
+                List<Vector3> poslist = DrawBezierCurve.BezierCurveWithUnlimitPoints(positions, 200);
+                lineRenderer.positionCount = poslist.Count;
+                lineRenderer.SetPositions(poslist.ToArray());
+            }
+            else
+            {
+                lineRenderer.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -102,6 +122,7 @@ public class KinectBezierCurveBody : MonoBehaviour
                 lineRenderer = head.GetComponent<LineRenderer>(),
                 jointType = KinectInterop.JointType.Head
             };
+            headLineRenderData.position = new Vector3();
             headLineRenderDatas.Add(headLineRenderData);
 
             // Body

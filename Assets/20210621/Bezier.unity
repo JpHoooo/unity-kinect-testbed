@@ -568,7 +568,7 @@ MonoBehaviour:
   playerCalibrationPose: 0
   userManager: {fileID: 0}
   gestureManager: {fileID: 0}
-  displayImages: 
+  displayImages: 01010000
   displayImageWidthPercent: 0.2
   statusInfoText: {fileID: 0}
   consoleLogMessages: 1
